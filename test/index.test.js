@@ -139,7 +139,8 @@ describe('Strategy', function () {
       }
     ].forEach(function (params) {
       it(params.desc, function (done) {
-        let s = new Strategy({}, fail)
+        let user = {}
+        let s = new Strategy({}, function (keyId, callback) { callback(null, user, publicKey) })
         s.fail = makeFail(done)
         s.authenticate(makeRequest(params))
       })
@@ -173,7 +174,7 @@ describe('Strategy', function () {
 
 // opts -
 //   method  - String
-//   path    - String
+//   url     - String
 //   headers - Object
 //   auth    - {scheme, params}
 //     scheme - String "Signature"
@@ -186,7 +187,7 @@ function makeRequest (opts) { return new Request(opts) }
 
 function Request (opts) {
   this.method = opts.method || 'GET'
-  this.path = opts.path || '/foo'
+  this.url = opts.url || '/foo'
   this.headers = extend({
     'date': (new Date()).toUTCString(),
     'content-length': '1234'
@@ -232,7 +233,7 @@ Request.prototype._makeSignatureString = function (opts) {
 
 Request.prototype._getHeader = function (header) {
   return header === '(request-target)'
-       ? (this.method.toLowerCase() + ' ' + this.path)
+       ? (this.method.toLowerCase() + ' ' + this.url)
        : (this.headers[header] || '')
 }
 

@@ -20,7 +20,12 @@
     "url": "https://github.com/interledger/passport-http-signature/issues"
   },
   "homepage": "https://github.com/interledger/passport-http-signature#readme",
+  "engines": {
+    "node": ">=0.12",
+    "iojs": ">=1.5"
+  },
   "dependencies": {
+    "http-signature": "^1.0.2",
     "passport-strategy": "^1.0.0"
   },
   "devDependencies": {
