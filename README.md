@@ -14,7 +14,24 @@ npm install --save passport-http-signature
 
 ## Usage
 
-TODO
+### Configure Strategy
+
+    passport.use(new HTTPSignatureStrategy(
+      function (username, done) {
+        User.findById(username, function(err, user) {
+          if (err) return done(err)
+          if (!user) return done()
+          done(null, user, user.public_key)
+        })
+      }))
+
+### Authenticate Requests
+
+    app.get('/private',
+      passport.authenticate('http-signature'),
+      function(req, res) {
+        res.json(req.user)
+      })
 
 ## License
 
